@@ -33,6 +33,7 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
       }
+      f.getNumBlocksRead++;
    }
 
    public synchronized void write(BlockId blk, Page p) {
@@ -46,6 +47,7 @@ public class FileMgr {
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
       }
+      f.getNumBlocksWritten++;
    }
 
    public synchronized BlockId append(String filename) {
@@ -79,6 +81,18 @@ public class FileMgr {
    
    public int blockSize() {
       return blocksize;
+   }
+
+   public int getNumBlocks() {
+      return getNumBlocks;
+   }
+  
+   public int getNumBlocksRead() {
+      return getNumBlocksRead;
+   }
+  
+   public int getNumBlocksWritten() {
+      return getNumBlocksWritten;
    }
 
    private RandomAccessFile getFile(String filename) throws IOException {
