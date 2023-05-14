@@ -63,6 +63,7 @@ class RemoteConnectionImpl extends UnicastRemoteObject implements RemoteConnecti
    void commit() {
       currentTx.commit();
       currentTx = db.newTx();
+      
    }
    
    /**
