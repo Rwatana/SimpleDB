@@ -16,6 +16,14 @@ public class FileTest {
 
       p1.setString(pos1, "abcdefghijklm");
       int size = Page.maxLength("abcdefghijklm".length());
+
+      assert fm.getNumBlocksWritten() == 1 : "error";
+      fm.write(blk,p1);
+      assert fm.getNumBlocksWritten() == 2 : "error";
+      
+
+
+
       // page のメソッド
       int pos2 = pos1 + size;
       p1.setInt(pos2, 345);

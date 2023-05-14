@@ -8,10 +8,15 @@ public class FileMgr {
    private int blocksize;
    private boolean isNew;
    private Map<String,RandomAccessFile> openFiles = new HashMap<>();
+   private int readBlocks;
+   private int writtenBlocks;
+
 
    public FileMgr(File dbDirectory, int blocksize) {
       this.dbDirectory = dbDirectory;
       this.blocksize = blocksize;
+      this.readBlocks = 0;
+      this.writtenBlocks = 0;
       isNew = !dbDirectory.exists();
 
       // create the directory if the database is new
@@ -29,6 +34,8 @@ public class FileMgr {
          RandomAccessFile f = getFile(blk.fileName());
          f.seek(blk.number() * blocksize);
          f.getChannel().read(p.contents());
+         this.readBlocks++;
+
       }
       catch (IOException e) {
          throw new RuntimeException("cannot read block " + blk);
@@ -42,10 +49,12 @@ public class FileMgr {
          // seek はどこに書き込むのかを決める
          f.getChannel().write(p.contents());
          // pはページ　コンテンツというメソッドは０に戻してバッファを返す
+         this.writtenBlocks++;
       }
       catch (IOException e) {
          throw new RuntimeException("cannot write block" + blk);
       }
+      
    }
 
    public synchronized BlockId append(String filename) {
@@ -79,6 +88,16 @@ public class FileMgr {
    
    public int blockSize() {
       return blocksize;
+   }
+
+
+  
+   public int getNumBlocksRead() {
+      return readBlocks;
+   }
+  
+   public int getNumBlocksWritten() {
+      return writtenBlocks;
    }
 
    private RandomAccessFile getFile(String filename) throws IOException {
