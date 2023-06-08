@@ -48,6 +48,7 @@ class LogIterator implements Iterator<byte[]> {
       if (currentpos == fm.blockSize()) {
          blk = new BlockId(blk.fileName(), blk.number()-1);
          moveToBlock(blk);
+         // bloovrk
       }
       byte[] rec = p.getBytes(currentpos);
       currentpos += Integer.BYTES + rec.length;

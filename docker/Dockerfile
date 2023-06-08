@@ -7,4 +7,3 @@ WORKDIR /app
 COPY . /app
 
 # 実行コマンド
-CMD ["java", "YourMainClass"]

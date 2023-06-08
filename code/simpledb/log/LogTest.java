@@ -1,8 +1,9 @@
 package simpledb.log;
 
 import java.util.Iterator;
-import simpledb.server.SimpleDB;
-import simpledb.file.Page;
+
+import code.simpledb.file.Page;
+import code.simpledb.server.SimpleDB;
 
 public class LogTest {
    private static LogMgr lm;
@@ -48,6 +49,8 @@ public class LogTest {
    private static byte[] createLogRecord(String s, int n) {
       int spos = 0;
       int npos = spos + Page.maxLength(s.length());
+      //3章実態みたいな
+      
       byte[] b = new byte[npos + Integer.BYTES];
       Page p = new Page(b);
       p.setString(spos, s);

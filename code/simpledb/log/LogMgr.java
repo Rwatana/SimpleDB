@@ -1,7 +1,10 @@
 package simpledb.log;
 
 import java.util.Iterator;
-import simpledb.file.*;
+
+import code.simpledb.file.BlockId;
+import code.simpledb.file.FileMgr;
+import code.simpledb.file.Page;
 
 /**
  * The log manager, which is responsible for 
@@ -29,9 +32,11 @@ public class LogMgr {
       this.fm = fm;
       this.logfile = logfile;
       byte[] b = new byte[fm.blockSize()];
+      // ここで初期化する段階でつける
       logpage = new Page(b);
       int logsize = fm.length(logfile);
       if (logsize == 0)
+         //何も書かれていない場合
          currentblk = appendNewBlock();
       else {
          currentblk = new BlockId(logfile, logsize-1);
@@ -68,6 +73,7 @@ public class LogMgr {
     * @return the LSN of the final value
     */
    public synchronized int append(byte[] logrec) {
+      // 後ろから入れるためのオフセットの位置
       int boundary = logpage.getInt(0);
       int recsize = logrec.length;
       int bytesneeded = recsize + Integer.BYTES;

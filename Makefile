@@ -7,8 +7,6 @@ FORCE_RM=true
 
 build:
 	docker build \
-     --build-arg USER_ID=3045 \
-     --build-arg GROUP_ID=1000 \
      -f docker/Dockerfile \
      -t ryoma_database_simpledb \
      --force-rm=true \
@@ -27,7 +25,7 @@ run:
 exec:
 	docker exec \
 		-it \
-		$(CONTAINER_NAME) /bin/bash
+		$(CONTAINER_NAME) /bin/ash
 
 stop:
 	docker stop $(IMAGE_NAME)
